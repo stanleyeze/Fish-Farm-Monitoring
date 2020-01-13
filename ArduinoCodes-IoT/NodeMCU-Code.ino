@@ -5,45 +5,53 @@ SoftwareSerial s(D6,D5);
 
 #define LED_BUILTIN 3
 
+//connection data
 String apiWritekey = "ZJI1BA5Z4135QHXW"; // replace with your THINGSPEAK WRITEAPI key here
 const char* ssid ="******"; // your wifi SSID name
 const char* password = "******";//wifi pasword 
 
-String apiKey= "62d0f28aaf7c8189a8d23a5cae9b8799"; 
+//open weather API key
+String apiKey= "**************"; 
 //the city you want the weather for 
 String location= "saskatoon,CA"; 
 int status = WL_IDLE_STATUS; 
 char server2[] = "api.openweathermap.org"; 
- 
+
+
+//thingspeak iot cloud connection
 const char* server = "api.thingspeak.com";
 float resolution=3.3/1023;// 3.3 is the supply volt  & 1023 is max analog read value
 WiFiClient client;
 
 
- 
+//initializations, conections
 void setup() {
 
+ //connect to the wifi module
   Serial.begin(115200);
   WiFi.disconnect();
   delay(10);
   WiFi.begin(ssid, password);
 
+  //show/print connecting on the screen
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
  
- 
+  //print connection to node mcu
   Serial.println("");
   Serial.print("NodeMcu connected to wifi...");
   Serial.println(ssid);
   Serial.println();
   
-  // Initialize Serial port
+  // Initialize Serial port to port 9600
   Serial.begin(9600);
   s.begin(9600);
   while (!Serial) continue;
  
 }
+
+// get the weather data from the open weather api
 void getWeather() { 
  Serial.println("\nStarting connection to server..."); 
  // if you get a connection, report back via serial: 
@@ -101,12 +109,18 @@ Serial.println("**** MORNING WEATHER FORCAST FOR DATE: "+nextWeatherTime0+" ****
 }
 
 void loop() {
- StaticJsonBuffer<1000> jsonBuffer;
+ //create json buffer of size 1000
+  StaticJsonBuffer<1000> jsonBuffer;
+ 
+ //create json object
   JsonObject& root = jsonBuffer.parseObject(s);
   if (root == JsonObject::invalid())
     return;
+ //receive json info if root is not invalid
   Serial.println("JSON received and parsed");
-  //root.prettyPrintTo(Serial);
+ 
+  //root.prettyPrintTo(Serial); 
+ // get and prints json objects
   Serial.print("Temperature Value ");
   float data1=root["data1"];
   Serial.println(data1);
@@ -122,7 +136,8 @@ void loop() {
   String data4=root["data4"];
   Serial.println(data4);
   Serial.println("---------------------xxxxx--------------------");
-
+ 
+ //if connection connection was established, push data to clud
   if (client.connect(server,80))
   {  
     String tsData = apiWritekey;

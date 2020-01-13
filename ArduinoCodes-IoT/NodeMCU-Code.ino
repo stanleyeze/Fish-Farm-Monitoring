@@ -6,8 +6,8 @@ SoftwareSerial s(D6,D5);
 #define LED_BUILTIN 3
 
 String apiWritekey = "ZJI1BA5Z4135QHXW"; // replace with your THINGSPEAK WRITEAPI key here
-const char* ssid ="SASKTEL344"; //"SASKTEL531";//"uofrGuest"; // your wifi SSID name
-const char* password = "3359mEQ535zv";//"6uKW7XPu5vZW" ;// wifi pasword 6uKW7XPu5vZW
+const char* ssid ="******"; // your wifi SSID name
+const char* password = "******";//wifi pasword 
 
 String apiKey= "62d0f28aaf7c8189a8d23a5cae9b8799"; 
 //the city you want the weather for 

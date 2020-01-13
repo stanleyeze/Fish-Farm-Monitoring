@@ -29,12 +29,13 @@ lcd.print(t);
 lcd.setCursor(1,1);
 lcd.print(h);
 */
-
+//get lcd to display on the screen
 lcd.begin();
 lcd.backlight();
-
+//print on boot lcd
 lcd.print("Hello World Stanley");
 
+//select port 9600
 s.begin(9600);
 dht.begin();
 Serial.begin(9600);
@@ -64,6 +65,8 @@ err="NAN";
     noTone(buzzer); 
     }
     */
+  
+//conditions to notify user
 if(ph > 9){
   //digitalWrite(LED_BUILTIN, HIGH); 
    tone(buzzer, 1000);
@@ -100,7 +103,9 @@ if(ph > 9){
     else{
       /////
       }
-    
+  
+  
+//create json buffer for transfering data to nodemcu
 StaticJsonBuffer<50> jsonBuffer;
  JsonObject& root = jsonBuffer.createObject();
   root["data1"] = t;// reads temperature value
@@ -108,6 +113,7 @@ StaticJsonBuffer<50> jsonBuffer;
   root["data3"] = ph;// reads ph value
   root["data4"] = err;// reads ph value
 
+ //also display sensor info on screen
 lcd.begin();
 lcd.backlight();
 lcd.setCursor(0,0);
